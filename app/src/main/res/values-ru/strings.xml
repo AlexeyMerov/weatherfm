@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">weather.fm</string>
+    <string name="google_api_key">AIzaSyAEtJW3xSDgI3xXc4OWwT8hY5Bzhub5Lsc</string>
+
+    <string name="search">Поиск</string>
+
+    <string name="state_no_data">Данные недоступны. Пожалуйста, укажите город или используейте GPS</string>
+
+    <string name="done">OK</string>
+    <string name="cancel">Отмена</string>
+
+    <string name="request_location_title">Запрос местоположения</string>
+    <string name="request_location_description">Необходимо дать доступ к местоположению.\nХотите перейти в настройки?
+    </string>
+
+    <string name="location_not_available_title">Местоположение не найдено</string>
+    <string name="location_not_available_description">На вашем устройстве нет записей о местоположении.\nПожалуйста,
+        попробуйте позже или используйте поиск по городу.
+    </string>
+
+    <string name="temp">Температура: %d °C</string>
+    <string name="pressure">Давление: %d hPa</string>
+    <string name="humidity">Влажность: %d%%</string>
+    <string name="weather_type">Погода: %s</string>
+    <string name="wind">Ветер: %d м/с (%s)</string>
+    <string name="clouds_percent">Облачность: %d%%</string>
+    <string name="north">С</string>
+    <string name="north_east">СВ</string>
+    <string name="north_south">СЗ</string>
+    <string name="east">В</string>
+    <string name="east_west">ЮВ</string>
+    <string name="west">Ю</string>
+    <string name="west_south">БЗ</string>
+    <string name="south">З</string>
+    <string name="no_internet_connection">Нет соединения с интернетом</string>
+
+</resources>

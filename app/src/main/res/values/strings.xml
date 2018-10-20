@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name" translatable="false">weather.fm</string>
+    <string name="google_api_key" translatable="false">AIzaSyAEtJW3xSDgI3xXc4OWwT8hY5Bzhub5Lsc</string>
+
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="search">Search</string>
+
+    <string name="state_no_data">No any data.\nPlease choose your city or use GPS</string>
+
+    <string name="done">OK</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="request_location_title">Request location</string>
+    <string name="request_location_description">You have to enable location permission.\nDo you want open the
+        settings?
+    </string>
+
+    <string name="location_not_available_title">Location not found</string>
+    <string name="location_not_available_description">Your device doesn\'t have any location records.
+        \nPlease try again later or use search by city.
+    </string>
+
+    <string name="temp">Temp: %d \°C</string>
+    <string name="pressure">Pressure: %d hPa</string>
+    <string name="humidity">Humidity: %d%%</string>
+    <string name="weather_type">Weather: %s</string>
+    <string name="wind">Wind: %d m/s (%s)</string>
+    <string name="clouds_percent">Облачность: %d%%</string>
+    <string name="north">N</string>
+    <string name="north_east">NE</string>
+    <string name="north_south">NS</string>
+    <string name="east">E</string>
+    <string name="east_west">EW</string>
+    <string name="west">W</string>
+    <string name="west_south">WS</string>
+    <string name="south">S</string>
+
+</resources>

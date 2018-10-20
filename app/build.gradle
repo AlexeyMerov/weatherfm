@@ -1,0 +1,135 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.alexeymerov.weatherfm"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+
+        release {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildOutputApkName(applicationVariants)
+        }
+        debug {
+            // test before release for shrink apk size
+//            debuggable false
+//            jniDebuggable false
+//            renderscriptDebuggable false
+//            pseudoLocalesEnabled false
+//            zipAlignEnabled true
+
+            minifyEnabled false
+            shrinkResources false
+            useProguard false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildOutputApkName(applicationVariants)
+//            ndk { //test before release for shrink apk size
+//                abiFilters "arm64-v8a", "armeabi-v7a"
+//            }
+        }
+    }
+
+    lintOptions {
+        warningsAsErrors = true
+        lintConfig file("lint.xml")
+        baseline file("baseline-lint.xml")
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+def buildOutputApkName(DomainObjectSet domainObjectSet) {
+    domainObjectSet.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "WeatherFm_${output.baseName}_${variant.versionName}_" + getDate()
+        }
+    }
+}
+
+static def getDate() { new Date().format('(dd.MM.yy)_(HH') + ".00).apk" }
+
+ext {
+    version_androidx = '1.0.0'
+    version_retrofit = '2.3.0'
+    version_lifecycle = '2.0.0'
+    version_room = '2.1.0-alpha01'
+    version_koin = '1.0.1'
+    version_glide = '4.8.0'
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    // kotlin coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.22.2'
+
+    // androidx
+    implementation "androidx.recyclerview:recyclerview:${version_androidx}"
+    implementation "androidx.cardview:cardview:${version_androidx}"
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
+
+    implementation 'com.google.android.material:material:1.0.0'
+
+    // retrofit
+    implementation "com.squareup.retrofit2:retrofit:${version_retrofit}"
+    implementation "com.squareup.retrofit2:converter-moshi:${version_retrofit}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${version_retrofit}"
+
+    // logging
+    debugImplementation 'com.facebook.stetho:stetho:1.5.0'
+    debugImplementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
+    debugImplementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
+
+    // rx
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.0.0'
+
+    // koin
+    implementation "org.koin:koin-core:${version_koin}"
+    implementation "org.koin:koin-androidx-viewmodel:${version_koin}"
+
+    // ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-extensions:${version_lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-common-java8:${version_lifecycle}"
+
+    // Room
+    implementation "androidx.room:room-runtime:${version_room}"
+    annotationProcessor "androidx.room:room-compiler:${version_room}"
+    kapt "androidx.room:room-compiler:${version_room}"
+
+    // Location and autocomplete
+    implementation 'com.google.android.gms:play-services-places:16.0.0'
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
+
+}
+
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
+
+androidExtensions {
+    experimental = true
+}
