@@ -20,7 +20,6 @@ import com.alexeymerov.weatherfm.utils.extensions.isVisible
 import com.alexeymerov.weatherfm.utils.extensions.makeVisible
 import com.alexeymerov.weatherfm.viewmodel.contract.IForecastViewModel
 import io.reactivex.Single
-import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.fragment_forecast.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -41,8 +40,16 @@ class ForecastFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        subscribeToRxBus()
         initItemsList()
         viewModel.requestForecast()
+    }
+
+    private fun subscribeToRxBus() = runDisposable {
+        RxBus
+            .listen(OnLoadingEvent::class.java)
+            .doOnError { errorLog(it) }
+            .subscribe { showLoader() }
     }
 
     private fun initItemsList() {
@@ -94,21 +101,11 @@ class ForecastFragment : BaseFragment() {
         setHasStableIds(true)
     }
 
-    private var disposableEvent: Disposable = RxBus
-        .listen(OnLoadingEvent::class.java)
-        .doOnError { errorLog(it) }
-        .subscribe { showLoader() }
-
     private fun showLoader() {
         if (empty_state_view?.isVisible() == true) {
             loading_progress_view.makeVisible()
             empty_state_view.makeVisible(false)
         }
-    }
-
-    override fun onDestroy() {
-        if (!disposableEvent.isDisposed) disposableEvent.dispose()
-        super.onDestroy()
     }
 
 }
