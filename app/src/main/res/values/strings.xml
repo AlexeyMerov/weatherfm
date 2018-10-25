@@ -25,7 +25,7 @@
     <string name="humidity">Humidity: %d%%</string>
     <string name="weather_type">Weather: %s</string>
     <string name="wind">Wind: %d m/s (%s)</string>
-    <string name="clouds_percent">Облачность: %d%%</string>
+    <string name="clouds_percent">Clouds: %d%%</string>
     <string name="north">N</string>
     <string name="north_east">NE</string>
     <string name="north_south">NS</string>

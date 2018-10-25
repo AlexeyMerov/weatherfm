@@ -10,6 +10,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.material.snackbar.Snackbar
 
 fun Activity.hideKeyboardEx() {
@@ -34,4 +36,15 @@ inline fun Context.isNetworkConnected(f: (Boolean) -> Unit) {
     val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val activeNetInfo = connectivityManager.activeNetworkInfo
     f.invoke(activeNetInfo != null && activeNetInfo.isConnected)
+}
+
+fun Activity.isGooglePlayServicesAvailable(): Boolean {
+    val googleApiAvailability = GoogleApiAvailability.getInstance()
+    val status = googleApiAvailability.isGooglePlayServicesAvailable(this)
+    if (status == ConnectionResult.SUCCESS) return true
+
+    if (googleApiAvailability.isUserResolvableError(status)) {
+        googleApiAvailability.getErrorDialog(this, status, 2404).show()
+    }
+    return false
 }

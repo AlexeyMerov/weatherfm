@@ -12,6 +12,7 @@ import com.alexeymerov.weatherfm.SP_CITY_NAME
 import com.alexeymerov.weatherfm.presentation.base.PermissionActivity
 import com.alexeymerov.weatherfm.presentation.fragment.ForecastFragment
 import com.alexeymerov.weatherfm.utils.*
+import com.alexeymerov.weatherfm.utils.extensions.isGooglePlayServicesAvailable
 import com.alexeymerov.weatherfm.viewmodel.contract.IForecastViewModel
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.google.android.gms.maps.model.LatLng
@@ -62,18 +63,19 @@ class MainActivity : PermissionActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_search -> onSearchClick()
-            R.id.action_gps -> getCurrentLocation()
+            R.id.action_gps -> onLocationClick()
             else -> return super.onOptionsItemSelected(item)
         }
         return true
     }
 
     private fun onSearchClick() {
+        if (!isGooglePlayServicesAvailable()) return
         val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY).build(this)
         startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE)
     }
 
-    private fun getCurrentLocation() {
+    private fun onLocationClick() {
         requestLocation(true) {
             when {
                 it != null -> handleLocationFound(it)

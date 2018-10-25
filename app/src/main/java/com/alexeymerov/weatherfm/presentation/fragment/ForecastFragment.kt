@@ -15,6 +15,7 @@ import com.alexeymerov.weatherfm.presentation.base.BaseFragment
 import com.alexeymerov.weatherfm.utils.OnLoadingEvent
 import com.alexeymerov.weatherfm.utils.RxBus
 import com.alexeymerov.weatherfm.utils.StickyHeaderDecorator
+import com.alexeymerov.weatherfm.utils.errorLog
 import com.alexeymerov.weatherfm.utils.extensions.isVisible
 import com.alexeymerov.weatherfm.utils.extensions.makeVisible
 import com.alexeymerov.weatherfm.viewmodel.contract.IForecastViewModel
@@ -33,7 +34,6 @@ class ForecastFragment : BaseFragment() {
 
     private val viewModel by viewModel<IForecastViewModel>()
     private val recyclerAdapter: ForecastRecyclerAdapter by lazy { initRecyclerAdapter() }
-    private val linerLayoutManager by lazy { initLayoutManager() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_forecast, container, false)
@@ -52,7 +52,7 @@ class ForecastFragment : BaseFragment() {
 
     private fun initRecyclerView() {
         with(forecast_recycler_view) {
-            layoutManager = linerLayoutManager
+            layoutManager = initLayoutManager()
             adapter = recyclerAdapter
             hasFixedSize()
             addItemDecoration(StickyHeaderDecorator(recyclerAdapter, true))
@@ -65,6 +65,7 @@ class ForecastFragment : BaseFragment() {
                 .just(this)
                 .map { convertToHeaderList() }
                 .compose(singleTransformer())
+                .doOnError { errorLog(it) }
                 .subscribe(Consumer {
                     empty_state_view.makeVisible(isEmpty())
                     loading_progress_view.makeVisible(false)
@@ -83,7 +84,7 @@ class ForecastFragment : BaseFragment() {
         return headerList
     }
 
-    private fun initLayoutManager() = LinearLayoutManager(activity!!).apply {
+    private fun initLayoutManager() = LinearLayoutManager(activity).apply {
         isSmoothScrollbarEnabled = true
         isMeasurementCacheEnabled = true
         isItemPrefetchEnabled = true
@@ -95,10 +96,11 @@ class ForecastFragment : BaseFragment() {
 
     private var disposableEvent: Disposable = RxBus
         .listen(OnLoadingEvent::class.java)
+        .doOnError { errorLog(it) }
         .subscribe { showLoader() }
 
     private fun showLoader() {
-        if (empty_state_view.isVisible()) {
+        if (empty_state_view?.isVisible() == true) {
             loading_progress_view.makeVisible()
             empty_state_view.makeVisible(false)
         }
