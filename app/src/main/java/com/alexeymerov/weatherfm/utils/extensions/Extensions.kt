@@ -1,5 +1,6 @@
 package com.alexeymerov.weatherfm.utils.extensions
 
+import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.os.Build
 import android.os.Handler
@@ -57,8 +58,9 @@ inline fun doOnRxAsync(millis: Long = 0, crossinline backgroundFun: () -> Unit) 
 }
 
 //Todo make disposable management
+@SuppressLint("CheckResult")
 inline fun doOnRxAsync(millis: Long = 0, crossinline backgroundFun: () -> Unit, crossinline mainThreadFun: () -> Unit) {
-    val disposable = Completable.create { backgroundFun.invoke() }
+    Completable.create { backgroundFun.invoke() }
         .delay(millis, TimeUnit.MILLISECONDS)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
